@@ -14,14 +14,15 @@ public class Gameplay : MonoBehaviour
     public Slider ProgressBar;
     public int progressPoints;
     public int progressWinPoint;
-    private bool winTheGame;
+    public bool winTheGame;
     public Camera myCam;
     public Animator anim;
     public int indicatorInt;
     private float pressTimer;
-    private bool loseTheGame;
+    public bool loseTheGame;
     public string LevelName;
     public string NextLevel;
+    private float loseTime = 1.5f;
     // Start is called before the first frame update
     void Start()
     {
@@ -91,11 +92,20 @@ public class Gameplay : MonoBehaviour
             loseTheGame = true;
         }
 
+        if(loseTheGame)
+        {
+            loseTime -= Time.deltaTime;
+            if(loseTime <= 0)
+            {
+                SceneManager.LoadScene("GameOver");
+            }
+        }
+
         //Indicator Transition
         if(energyPoints >= (0.78 * energyMaxPoints)) //>78%
         {
             myCam.backgroundColor = Color.red;
-            if(Input.GetKey(KeyCode.Space))
+            if(Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
             {
                 indicatorInt = 2;
             }
